@@ -27,9 +27,10 @@ model Model {
   name           String
   type           ModelTypeEnum
   age            Int
-  ehinicity      EthicityEnum
+  ethinicity     EthenecityEnum
   eyeColor       EyeColorEnum
   bald           Boolean
+  userId         String
   trainingImages TrainingImages[]
   outputImages   OutputImages[]
   createdAt      DateTime         @default(now())
@@ -43,14 +44,22 @@ model TrainingImages {
   model    Model  @relation(fields: [modelId], references: [id])
 }
 
+enum OutputImagesStatusEnum {
+  PENDING
+  SUCCESS
+  ERROR
+}
+
 model OutputImages {
-  id       String @id @default(uuid())
-  imageUrl String
-  modelId  String
-  userId   String
-  model    Model  @relation(fields: [modelId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String                 @id @default(uuid())
+  imageUrl  String                 @default("")
+  modelId   String
+  userId    String
+  prompt    String
+  status    OutputImagesStatusEnum @default(PENDING)
+  model     Model                  @relation(fields: [modelId], references: [id])
+  createdAt DateTime               @default(now())
+  updatedAt DateTime               @updatedAt
 }
 
 model Packs {
@@ -72,7 +81,7 @@ enum ModelTypeEnum {
   Others
 }
 
-enum EthicityEnum {
+enum EthenecityEnum {
   White
   Black
   Asian
